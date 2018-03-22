@@ -1,6 +1,7 @@
 import numpy as np
 from env import Environment
 from consts import *
+from ipdb import set_trace
 
 class Agent():
 	def __init__(self, env, pool, brain):
@@ -17,6 +18,7 @@ class Agent():
 	def act(self, s):
 		m = np.zeros((AGENTS, ACTION_DIM))	# create max_mask
 		m[:, CLASSES:] = s[:, FEATURE_DIM:]
+		#set_trace()
 
 		if self.epsilon < 1.0:
 			p = self.brain.predict_np(s) - MAX_MASK_CONST * m 	# select an action not considering those already performed

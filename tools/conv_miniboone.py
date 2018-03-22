@@ -6,6 +6,7 @@
 
 import pandas as pd
 import numpy as np
+from ipdb import set_trace
 
 COL_COUNT = '_count'
 COL_LABEL = '_label'
@@ -14,7 +15,8 @@ SEED = 998822
 #---
 np.random.seed(SEED)
 
-data = pd.read_csv("../data/raw/miniboone.dat", header=None, sep=' +')
+data = pd.read_csv("../data/raw/miniboone.dat", header=None, sep='\s+')
+set_trace()
 
 data[COL_LABEL] = 0
 data.iloc[36500:][COL_LABEL] = 1

@@ -1,9 +1,9 @@
 BLANK_INIT = True
 
 #================== DATASET
-DATA_FILE = '../data/mb-train'
-DATA_VAL_FILE = '../data/mb-val'
-META_FILE = '../data/mb-meta'
+DATA_FILE = 'data/mb-train'
+DATA_VAL_FILE = 'data/mb-val'
+META_FILE = 'data/mb-meta'
 
 CLASSES = 2
 FEATURE_DIM = 50
@@ -18,7 +18,7 @@ META_AVG   = 'avg'
 META_STD   = 'std'
  
 #================== RL
-FEATURE_FACTOR   =   0.001
+FEATURE_FACTOR   =   0.1
 REWARD_CORRECT   =   0
 REWARD_INCORRECT =  -1
 

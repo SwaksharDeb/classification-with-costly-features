@@ -4,6 +4,7 @@ import torch
 import torch.nn.functional as F
 from torch.autograd import Variable
 
+from ipdb import set_trace
 #==============================
 class Net(torch.nn.Module):
 	def __init__(self):
@@ -52,14 +53,15 @@ class Net(torch.nn.Module):
 	def train_network(self, s, a, q_):
 		s  = Variable(s)
 		a  = Variable(a)
-		q_ = Variable(q_) 
+		q_ = Variable(q_)
 
+		## self(s) == call forward function
 		q_pred = self(s).gather(1, a)	# we have results only for performed actions
 		loss_q = self.loss_f(q_pred, q_)
 
 		self.opt.zero_grad()
 		torch.nn.utils.clip_grad_norm(self.parameters(), OPT_MAX_NORM)
-		loss_q.backward()	
+		loss_q.backward()
 		self.opt.step()
 
 	def set_lr(self, lr):

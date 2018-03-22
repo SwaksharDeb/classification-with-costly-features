@@ -53,6 +53,7 @@ class Brain:
 		_, amax = q_current.max(1, keepdim=True)
 		q_ = q_target.gather(1, amax)
 
+		# when a<CLASSES: predict label (q is terminal step) q_ = 0
 		q_[ a < CLASSES ] = 0
 		q_ = q_ + r
 

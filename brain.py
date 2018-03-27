@@ -8,6 +8,8 @@ import sys
 from consts import *
 from net import Net
 
+from ipdb import set_trace
+
 #==============================
 class Brain:
 	def __init__(self, pool):
@@ -28,7 +30,6 @@ class Brain:
 
 	def predict_pt(self, s, target):
 		s = Variable(s)
-
 		if target:
 			return self.model_(s).data
 		else:
@@ -41,7 +42,7 @@ class Brain:
 
 	def train(self):
 		s, a, r, s_ = self.pool.sample(BATCH_SIZE)
-
+		set_trace()
 		# extract the mask
 		m_ = torch.FloatTensor(BATCH_SIZE, ACTION_DIM).zero_().cuda()
 		m_[:, CLASSES:] = s_[:, FEATURE_DIM:]

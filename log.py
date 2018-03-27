@@ -52,12 +52,12 @@ class PerfAgent():
 
 #==============================
 class PerfEnv:
-	def __init__(self, data, costs, ff):
+	def __init__(self, data, label, init, ff):
 		data_val_idx = np.random.choice(len(data), LOG_PERF_VAL_SIZE)
 
-		self.x = data.iloc[data_val_idx, 0:-1].astype('float32').as_matrix()
-		self.y = data.iloc[data_val_idx,   -1].astype('int32').as_matrix()
-		self.costs = costs.as_matrix()
+		self.x = data
+		self.y = label
+		self.init = init
 
 		self.agents = LOG_PERF_VAL_SIZE
 		self.lin_array = np.arange(self.agents)
@@ -66,6 +66,8 @@ class PerfEnv:
 
 	def reset(self):
 		self.mask = np.zeros( (self.agents, FEATURE_DIM) )
+		# scatter init
+		set_trace()
 		self.done = np.zeros( self.agents, dtype=np.bool )
 
 		return self._get_state()
@@ -73,7 +75,7 @@ class PerfEnv:
 	def step(self, action):
 		self.mask[self.lin_array, action - CLASSES] = 1
 
-		r = -self.costs[action - CLASSES] * self.ff
+		r = -self.ff
 
 		for i in np.where(action < CLASSES)[0]:
 			r[i] = REWARD_CORRECT if action[i] == self.y[i] else REWARD_INCORRECT
@@ -90,8 +92,8 @@ class PerfEnv:
 		
 #==============================
 class Log:
-	def __init__(self, data_val, costs, ff, brain):
-		self.env = PerfEnv(data_val, costs, ff)
+	def __init__(self, data_val, label_val, init_val, ff, brain):
+		self.env = PerfEnv(data_val, label_val, init_val, ff)
 		self.brain = brain
 
 		self.LOG_TRACKED_STATES = np.vstack(LOG_TRACKED_STATES).astype(np.float32)

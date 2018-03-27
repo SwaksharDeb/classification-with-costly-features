@@ -17,8 +17,7 @@ class Agent():
 
 	def act(self, s):
 		m = np.zeros((AGENTS, ACTION_DIM))	# create max_mask
-		m[:, CLASSES:] = s[:, FEATURE_DIM:]
-		#set_trace()
+		m[:, CLASSES:] = (s[:, :FEATURE_DIM]!=0).astype(np.float32) 
 
 		if self.epsilon < 1.0:
 			p = self.brain.predict_np(s) - MAX_MASK_CONST * m 	# select an action not considering those already performed

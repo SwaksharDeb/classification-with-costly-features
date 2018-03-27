@@ -35,30 +35,22 @@ torch.manual_seed(SEED)
 torch.cuda.manual_seed(SEED)
 
 #==============================
-data = pd.read_pickle(DATA_FILE)
-data_val = pd.read_pickle(DATA_VAL_FILE)
-meta = pd.read_pickle(META_FILE)
+data = torch.load(DATA_FILE)
+label = torch.load(LABEL_FILE)
+init = torch.load(INIT_FILE)
 
-feats = meta.index
-costs = meta[META_COSTS]
-
-for col in COLUMN_DROP:
-	if col in data.columns:
-		data.drop(col, axis=1, inplace=True)	
-		data_val.drop(col, axis=1, inplace=True)	
-
-data[feats] = (data[feats] - meta[META_AVG]) / meta[META_STD]			# normalize
-data_val[feats] = (data_val[feats] - meta[META_AVG]) / meta[META_STD]	# normalize
+data_val = torch.load(DATA_VAL_FILE)
+label_val = torch.load(LABEL_VAL_FILE)
+init_val = torch.load(INIT_VAL_FILE)
 
 print("Using", DATA_FILE, "with", len(data), "samples.")
+
 #==============================
 pool  = Pool(POOL_SIZE)
-
-env   = Environment(data, costs, FEATURE_FACTOR)
+env   = Environment(data, label, init, FEATURE_FACTOR)
 brain = Brain(pool)
 agent = Agent(env, pool, brain)
-log   = Log(data_val, costs, FEATURE_FACTOR, brain)
-
+log   = Log(data_val, label_val, init_val, FEATURE_FACTOR, brain)
 #==============================
 epoch_start = 0
 
@@ -80,6 +72,8 @@ for i in range(POOL_SIZE // AGENTS):
 	utils.print_progress(i, POOL_SIZE // AGENTS)
 	agent.step()
 
+########## HERE ##############
+set_trace()
 pool.cuda()
 	
 print("Starting..")

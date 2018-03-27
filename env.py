@@ -1,21 +1,25 @@
 import numpy as np
 
 from consts import *
+
+from ipdb import set_trace
+
 #==============================
 
 LIN_ARRAY = np.arange(AGENTS)
 #==============================
 class Environment:
-	def __init__(self, data, costs, ff):
-		self.data_x = data.iloc[:, 0:-1].astype('float32').as_matrix()
-		self.data_y = data.iloc[:,   -1].astype('int32').as_matrix()
+	def __init__(self, data, label, init, ff):
+		self.data_x = data
+		self.data_y = label
+		self.data_init = init
 		self.data_len = len(data)
 
-		self.costs = costs.as_matrix()
+		self.cost = np.ones(AGENTS)
 
-		self.mask = np.zeros( (AGENTS, FEATURE_DIM) )
-		self.x    = np.zeros( (AGENTS, FEATURE_DIM) )
-		self.y    = np.zeros( AGENTS )
+		self.mask = np.zeros( (AGENTS, FEATURE_DIM+CONTEXT_DIM), dtype=np.float32 )
+		self.x    = np.zeros( (AGENTS, FEATURE_DIM+CONTEXT_DIM), dtype=np.float32 )
+		self.y    = np.zeros( AGENTS, dtype=int )
 
 		self.ff = ff
 
@@ -27,13 +31,15 @@ class Environment:
 
 	def _reset(self, i):
 		self.mask[i] = 0
-		self.x[i], self.y[i] = self._generate_sample()
+		self.mask[i][-10:] = 1
+		self.x[i], self.y[i], init = self._generate_sample()
+		self.mask[i][init[0]] = 1
 
 	def step(self, action):
 		self.mask[LIN_ARRAY, action - CLASSES] = 1
-
-		r = -self.costs[action - CLASSES] * self.ff
-
+		###### HERE ######
+		r = -self.cost * self.ff
+		set_trace()
 		for i in np.where(action < CLASSES)[0]:
 			r[i] = REWARD_CORRECT if action[i] == self.y[i] else REWARD_INCORRECT
 			self._reset(i)
@@ -47,11 +53,11 @@ class Environment:
 
 		x = self.data_x[idx]
 		y = self.data_y[idx]
-
-		return (x, y)
+		init = self.data_init[idx]
+		return (x, y, init)
 
 	def _get_state(self):
 		x_ = self.x * self.mask
-		x_ = np.concatenate( (x_, self.mask), axis=1 ).astype(np.float32)
+		#x_ = np.concatenate( (x_, self.mask), axis=1 ).astype(np.float32)
 		return x_
 		

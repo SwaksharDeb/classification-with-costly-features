@@ -3,6 +3,7 @@ import torch
 
 from consts import *
 
+
 class Pool():
 	def __init__(self, size):
 		self.data_s  = torch.FloatTensor(size, STATE_DIM)
@@ -18,7 +19,7 @@ class Pool():
 		size = len(s)
 
 		self.data_s [self.idx:self.idx+size] = torch.from_numpy(s)
-		self.data_a [self.idx:self.idx+size] = torch.from_numpy(a)	
+		self.data_a [self.idx:self.idx+size] = torch.from_numpy(a)
 		self.data_r [self.idx:self.idx+size] = torch.from_numpy(r)
 		self.data_s_[self.idx:self.idx+size] = torch.from_numpy(s_)
 

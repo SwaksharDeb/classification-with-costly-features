@@ -12,7 +12,8 @@ import utils, sys, json, random, torch
 
 import argparse
 
-from ipdb import set_trace
+from tqdm import tqdm
+
 #==============================
 def is_time(epoch, trigger):
 	return (trigger > 0) and (epoch % trigger == 0)
@@ -72,8 +73,6 @@ for i in range(POOL_SIZE // AGENTS):
 	utils.print_progress(i, POOL_SIZE // AGENTS)
 	agent.step()
 
-########## HERE ##############
-set_trace()
 pool.cuda()
 	
 print("Starting..")
@@ -95,19 +94,12 @@ for epoch in range(epoch_start + 1, TRAINING_EPOCHS + 1):
 	if is_time(epoch, LR_SC_EPOCHS):
 		brain.update_lr(epoch)
 
-	# LOG
-	if is_time(epoch, LOG_EPOCHS):
-		print("Epoch: {}/{}".format(epoch, TRAINING_EPOCHS))
-		log.log()
-		log.print_speed()
-
 	if is_time(epoch, LOG_PERF_EPOCHS):
-		log.log_perf()
+		print ('[Test] epoch {}'.format(epoch))
+		log.log_perf(epoch)
 
 	# TRAIN
 	brain.train()
 	
 	for i in range(EPOCH_STEPS):
 		agent.step()
-
-	# sys.stdout.write('.'); sys.stdout.flush()

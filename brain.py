@@ -8,7 +8,6 @@ import sys
 from consts import *
 from net import Net
 
-from ipdb import set_trace
 
 #==============================
 class Brain:
@@ -42,10 +41,9 @@ class Brain:
 
 	def train(self):
 		s, a, r, s_ = self.pool.sample(BATCH_SIZE)
-		set_trace()
 		# extract the mask
 		m_ = torch.FloatTensor(BATCH_SIZE, ACTION_DIM).zero_().cuda()
-		m_[:, CLASSES:] = s_[:, FEATURE_DIM:]
+		m_[:, CLASSES:] = (s_[:, :FEATURE_DIM]!=0).float()
 
 		# compute
 		q_current = self.predict_pt(s_, target=False) - (MAX_MASK_CONST * m_) # masked actions do not influence the max

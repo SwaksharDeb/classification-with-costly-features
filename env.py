@@ -1,13 +1,9 @@
 import numpy as np
-
 from consts import *
 
-from ipdb import set_trace
-
-#==============================
 
 LIN_ARRAY = np.arange(AGENTS)
-#==============================
+
 class Environment:
 	def __init__(self, data, label, init, ff):
 		self.data_x = data
@@ -37,20 +33,18 @@ class Environment:
 
 	def step(self, action):
 		self.mask[LIN_ARRAY, action - CLASSES] = 1
-		###### HERE ######
+
 		r = -self.cost * self.ff
-		set_trace()
+
 		for i in np.where(action < CLASSES)[0]:
 			r[i] = REWARD_CORRECT if action[i] == self.y[i] else REWARD_INCORRECT
 			self._reset(i)
 
 		s_ = self._get_state()
-
 		return (s_, r)
 
 	def _generate_sample(self):
 		idx = np.random.randint(0, self.data_len)
-
 		x = self.data_x[idx]
 		y = self.data_y[idx]
 		init = self.data_init[idx]
@@ -58,6 +52,5 @@ class Environment:
 
 	def _get_state(self):
 		x_ = self.x * self.mask
-		#x_ = np.concatenate( (x_, self.mask), axis=1 ).astype(np.float32)
 		return x_
 		

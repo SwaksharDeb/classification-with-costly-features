@@ -1,15 +1,13 @@
 BLANK_INIT = True
 
 #================== DATASET
-#DATA_FILE = 'data/mb-train'
-#DATA_VAL_FILE = 'data/mb-val'
 DATA_FILE = '../SymCheck/simple_context/data/20dis_100w_data'
 LABEL_FILE = '../SymCheck/simple_context/data/20dis_100w_label'
 INIT_FILE = '../SymCheck/simple_context/data/20dis_100w_init'
 
-DATA_VAL_FILE = '../SymCheck/simple_context/data/20dis_test_noise_data'
-LABEL_VAL_FILE = '../SymCheck/simple_context/data/20dis_test_noise_label'
-INIT_VAL_FILE = '../SymCheck/simple_context/data/20dis_test_noise_init'
+DATA_VAL_FILE = '../SymCheck/simple_context/data/20dis_small_test_noise_data'
+LABEL_VAL_FILE = '../SymCheck/simple_context/data/20dis_small_test_noise_label'
+INIT_VAL_FILE = '../SymCheck/simple_context/data/20dis_small_test_noise_init'
 
 
 CLASSES = 20
@@ -18,23 +16,15 @@ CONTEXT_DIM = 10
 STATE_DIM = FEATURE_DIM + CONTEXT_DIM
 ACTION_DIM = FEATURE_DIM + CLASSES
 
-COLUMN_LABEL = '_label'
-COLUMN_DROP  = ['_count']
-
-META_COSTS = 'cost'
-META_AVG   = 'avg'
-META_STD   = 'std'
  
 #================== RL
-FEATURE_FACTOR   =   0.1
+FEATURE_FACTOR   =   0.01
 REWARD_CORRECT   =   0
 REWARD_INCORRECT =  -1
 
 #================== TRAINING
 AGENTS = 1000
-
 TRAINING_EPOCHS = 10000
-
 EPOCH_STEPS = 1
 
 EPSILON_START  = 0.50
@@ -43,13 +33,7 @@ EPSILON_EPOCHS = 2000	 	# epsilon will fall to EPSILON_END after EPSILON_EPOCHS
 EPSILON_UPDATE_EPOCHS = 10  # update epsilon every x epochs
 
 #================== LOG
-from log_states.log_mb import TRACKED_STATES
-LOG_TRACKED_STATES = TRACKED_STATES
-
-LOG_EPOCHS = 100  			# states prediction will be logged every LOG_EPOCHS
-
-LOG_PERF_EPOCHS = 100
-LOG_PERF_VAL_SIZE = 1000
+LOG_PERF_EPOCHS = 50
 
 #================== NN
 BATCH_SIZE =    100000
@@ -73,4 +57,8 @@ TARGET_RHO = 0.01
 SAVE_EPOCHS = 1000
 MAX_MASK_CONST = 1.e6
 
-SEED = 112233
+SEED = 1126
+
+
+#================== PLOT
+PLOT_ENV = 'ddqn'

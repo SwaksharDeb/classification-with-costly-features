@@ -4,7 +4,7 @@ import torch
 import torch.nn.functional as F
 from torch.autograd import Variable
 
-from ipdb import set_trace
+
 #==============================
 class Net(torch.nn.Module):
 	def __init__(self):

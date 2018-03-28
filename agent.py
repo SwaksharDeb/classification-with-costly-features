@@ -1,7 +1,7 @@
 import numpy as np
 from env import Environment
 from consts import *
-from ipdb import set_trace
+
 
 class Agent():
 	def __init__(self, env, pool, brain):

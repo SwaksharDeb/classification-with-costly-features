@@ -136,4 +136,4 @@ class Log:
             win=self.avg_r_win,
             update='append'
         )
-
+		self.vis.save([PLOT_ENV])

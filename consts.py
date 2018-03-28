@@ -1,24 +1,24 @@
 BLANK_INIT = True
 
 #================== DATASET
-DATA_FILE = '../SymCheck/simple_context/data/20dis_100w_data'
-LABEL_FILE = '../SymCheck/simple_context/data/20dis_100w_label'
-INIT_FILE = '../SymCheck/simple_context/data/20dis_100w_init'
+DATA_FILE = '../SymCheck/simple_context/data/75dis_100w_data'
+LABEL_FILE = '../SymCheck/simple_context/data/75dis_100w_label'
+INIT_FILE = '../SymCheck/simple_context/data/75dis_100w_init'
 
-DATA_VAL_FILE = '../SymCheck/simple_context/data/20dis_small_test_noise_data'
-LABEL_VAL_FILE = '../SymCheck/simple_context/data/20dis_small_test_noise_label'
-INIT_VAL_FILE = '../SymCheck/simple_context/data/20dis_small_test_noise_init'
+DATA_VAL_FILE = '../SymCheck/simple_context/data/75dis_small_test_noise_data'
+LABEL_VAL_FILE = '../SymCheck/simple_context/data/75dis_small_test_noise_label'
+INIT_VAL_FILE = '../SymCheck/simple_context/data/75dis_small_test_noise_init'
 
 
-CLASSES = 20
-FEATURE_DIM = 118
+CLASSES = 75
+FEATURE_DIM = 244
 CONTEXT_DIM = 10
 STATE_DIM = FEATURE_DIM + CONTEXT_DIM
 ACTION_DIM = FEATURE_DIM + CLASSES
-
+HIDDEN_DIM = [2048, 1024, 1024]
  
 #================== RL
-FEATURE_FACTOR   =   0.01
+FEATURE_FACTOR   =   0.05
 REWARD_CORRECT   =   0
 REWARD_INCORRECT =  -1
 
@@ -38,9 +38,6 @@ LOG_PERF_EPOCHS = 50
 #================== NN
 BATCH_SIZE =    100000
 POOL_SIZE  =   2000000
-
-NN_FC_DENSITY = 1024
-NN_HIDDEN_LAYERS = 3
 
 OPT_LR = 1.0e-4
 OPT_ALPHA = 0.95

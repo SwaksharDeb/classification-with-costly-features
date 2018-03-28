@@ -1,7 +1,7 @@
 from consts import *
 
 import torch
-import torch.nn.functional as F
+import torch.nn as nn
 from torch.autograd import Variable
 
 
@@ -9,19 +9,13 @@ from torch.autograd import Variable
 class Net(torch.nn.Module):
 	def __init__(self):
 		super(Net, self).__init__()
+		self.layer_size = [STATE_DIM] + HIDDEN_DIM + [ACTION_DIM]
 
-		in_nn  = STATE_DIM
-		out_nn = NN_FC_DENSITY
-
-		self.l_fc = []
-		for i in range(NN_HIDDEN_LAYERS):
-			l = torch.nn.Linear(in_nn, out_nn)
-			in_nn = out_nn
-
-			self.l_fc.append(l)
-			self.add_module("l_fc_"+str(i), l)
-
-		self.l_out_q_val = torch.nn.Linear(in_nn, ACTION_DIM)		# q-value prediction
+		self.linears = nn.ModuleList(
+			[nn.Linear(self.layer_size[i], self.layer_size[i + 1])
+				for i in range(len(self.layer_size) - 1)])
+		self.activations = nn.ModuleList(
+			[nn.ReLU() for i in range(len(self.layer_size) - 2)])
 
 		self.opt = torch.optim.RMSprop(self.parameters(), lr=OPT_LR, alpha=OPT_ALPHA)
 
@@ -31,11 +25,11 @@ class Net(torch.nn.Module):
 
 	def forward(self, batch):
 		flow = batch
+		for i in range(len(self.layer_size) - 2):
+			flow = self.linears[i](flow)
+			flow = self.activations[i](flow)
 
-		for l in self.l_fc:
-			flow = F.relu(l(flow))
-
-		a_out_q_val = self.l_out_q_val(flow)
+		a_out_q_val = self.linears[-1](flow)
 
 		return a_out_q_val
 

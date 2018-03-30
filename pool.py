@@ -26,11 +26,11 @@ class Pool():
 		self.idx = (self.idx + size) % self.size
 
 	def sample(self, size):
-		idx = torch.from_numpy(np.random.choice(self.size, size)).cuda()
+		idx = torch.from_numpy(np.random.choice(self.size, size)).cuda(GPU_ID)
 		return self.data_s[idx], self.data_a[idx], self.data_r[idx], self.data_s_[idx]
 
 	def cuda(self):
-		self.data_s  = self.data_s.cuda() 
-		self.data_a  = self.data_a.cuda() 
-		self.data_r  = self.data_r.cuda() 
-		self.data_s_ = self.data_s_.cuda()
+		self.data_s  = self.data_s.cuda(GPU_ID) 
+		self.data_a  = self.data_a.cuda(GPU_ID) 
+		self.data_r  = self.data_r.cuda(GPU_ID) 
+		self.data_s_ = self.data_s_.cuda(GPU_ID)

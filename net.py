@@ -21,7 +21,7 @@ class Net(torch.nn.Module):
 
 		self.loss_f = torch.nn.MSELoss()
 
-		self.cuda()
+		self.cuda(GPU_ID)
 
 	def forward(self, batch):
 		flow = batch

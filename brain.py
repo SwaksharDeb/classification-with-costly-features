@@ -35,14 +35,14 @@ class Brain:
 			return self.model(s).data
 
 	def predict_np(self, s, target=False):
-		s = torch.from_numpy(s).cuda()
+		s = torch.from_numpy(s).cuda(GPU_ID)
 		res = self.predict_pt(s, target)
 		return res.cpu().numpy()
 
 	def train(self):
 		s, a, r, s_ = self.pool.sample(BATCH_SIZE)
 		# extract the mask
-		m_ = torch.FloatTensor(BATCH_SIZE, ACTION_DIM).zero_().cuda()
+		m_ = torch.FloatTensor(BATCH_SIZE, ACTION_DIM).zero_().cuda(GPU_ID)
 		m_[:, CLASSES:] = (s_[:, :FEATURE_DIM]!=0).float()
 
 		# compute

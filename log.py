@@ -72,14 +72,30 @@ class PerfEnv:
 		return self._get_state()
 
 	def step(self, action):
-		self.mask[self.lin_array, action - CLASSES] = 1
-		r = -self.ff*self.cost
+		queryed = action - CLASSES
+		queryed = queryed.clip(min=-1)
+		s = self._get_state()
+
+		self.mask[self.lin_array, queryed] = 1
+		query_num = self.mask.sum(1)-11
+		finish_mask = (query_num==QUERY_BUDGET)
+
+		r = -self.ff * self.cost
+
+		for i in np.where(finish_mask==True)[0]:
+			r[i] = REWARD_INCORRECT
+			self.done[i] = 1
 
 		for i in np.where(action < CLASSES)[0]:
 			r[i] = REWARD_CORRECT if action[i] == self.y[i] else REWARD_INCORRECT
 			self.done[i] = 1
 
 		s_ = self._get_state()
+		num_s_one  = (s ==1).sum(1)-3
+		num_s__one = (s_==1).sum(1)-3
+		addition_reward = SHAPING_FACTOR * (1 * num_s__one - num_s_one)
+		r = r+addition_reward
+
 		return (s_, r, self.done)
 
 	def _get_state(self):
@@ -92,11 +108,16 @@ class Log:
 		self.env = PerfEnv(data_val, label_val, init_val, ff)
 		self.brain = brain
 
-		self.vis = visdom.Visdom()
-		self.avg_corr_win = self.vis.line(np.array([np.nan]), opts=dict(title='Accuracy'), env=PLOT_ENV)
-		self.avg_step_win = self.vis.line(np.array([np.nan]), opts=dict(title='Step'), env=PLOT_ENV)
-		self.avg_r_win = self.vis.line(np.array([np.nan]), opts=dict(title='Reward'), env=PLOT_ENV)
+		if PLOT:
+			self.vis = visdom.Visdom()
+			title_accuracy = 'Accuracy ({} dis rshape {})'.format(CLASSES, SHAPING_FACTOR)
+			title_reward   = 'Reward ({} dis rshape {})'.format(CLASSES, SHAPING_FACTOR)
+			title_steps    = 'Steps ({} dis rshape {})'.format(CLASSES, SHAPING_FACTOR)
 
+			self.avg_accuracy_win = self.vis.line(np.array([np.nan]), opts=dict(title=title_accuracy), env=PLOT_ENV)
+			self.avg_reward_win   = self.vis.line(np.array([np.nan]), opts=dict(title=title_reward), env=PLOT_ENV)
+			self.avg_steps_win    = self.vis.line(np.array([np.nan]), opts=dict(title=title_steps), env=PLOT_ENV)
+			
 		if BLANK_INIT:
 			mode = "w"
 		else:
@@ -112,28 +133,29 @@ class Log:
 
 		print("{:.3f} {:.3f} {:.3f}".format(avg_r, avg_step, avg_corr), file=self.perf_file, flush=True)
 		print("[epoch {}] reward:{:.3f}\tasked:{:.3f}\taccuracy:{:.3f}".format(epoch, avg_r, avg_step, avg_corr))
-		self.plot(epoch, avg_r, avg_step, avg_corr)
+		if PLOT:
+			self.plot(epoch, avg_r, avg_step, avg_corr)
 
 	def plot(self, epoch, avg_r, avg_step, avg_corr):
 		self.vis.line(
             np.array([avg_corr]),
             np.array([epoch]),
             env=PLOT_ENV,
-            win=self.avg_corr_win,
+            win=self.avg_accuracy_win,
             update='append'
         )
 		self.vis.line(
             np.array([avg_step]),
             np.array([epoch]),
             env=PLOT_ENV,
-            win=self.avg_step_win,
+            win=self.avg_steps_win,
             update='append'
         )
 		self.vis.line(
             np.array([avg_r]),
             np.array([epoch]),
             env=PLOT_ENV,
-            win=self.avg_r_win,
+            win=self.avg_reward_win,
             update='append'
         )
 		self.vis.save([PLOT_ENV])

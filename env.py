@@ -1,6 +1,7 @@
 import numpy as np
 from consts import *
 
+from ipdb import set_trace
 
 LIN_ARRAY = np.arange(AGENTS)
 
@@ -32,15 +33,30 @@ class Environment:
 		self.mask[i][init[0]] = 1
 
 	def step(self, action):
-		self.mask[LIN_ARRAY, action - CLASSES] = 1
+		queryed = action - CLASSES
+		queryed = queryed.clip(min=-1)
+		s = self._get_state()
+
+		self.mask[LIN_ARRAY, queryed] = 1
+		query_num = self.mask.sum(1)-11
+		finish_mask = (query_num==QUERY_BUDGET)
 
 		r = -self.cost * self.ff
+
+		for i in np.where(finish_mask==True)[0]:
+			r[i] = REWARD_INCORRECT
+			self._reset(i)
 
 		for i in np.where(action < CLASSES)[0]:
 			r[i] = REWARD_CORRECT if action[i] == self.y[i] else REWARD_INCORRECT
 			self._reset(i)
 
 		s_ = self._get_state()
+		num_s_one  = (s ==1).sum(1)-3
+		num_s__one = (s_==1).sum(1)-3
+		addition_reward = SHAPING_FACTOR * (1 * num_s__one - num_s_one)
+		r = r+addition_reward
+
 		return (s_, r)
 
 	def _generate_sample(self):

@@ -11,7 +11,7 @@ INIT_VAL_FILE    = '../SymCheck/simple_context/data/73dis_test_noise_init'
 
 
 CLASSES          = 73
-FEATURE_DIM      = 236
+FEATURE_DIM      = 236	# 236(73) / 300(136) / 319(196) / 337(255)
 CONTEXT_DIM      = 10
 QUERY_BUDGET     = 10
 STATE_DIM        = FEATURE_DIM + CONTEXT_DIM
@@ -20,7 +20,7 @@ HIDDEN_DIM       = [2048, 1024, 1024]
  
 #================== RL
 FEATURE_FACTOR   = 0.005
-REWARD_CORRECT   = 0
+REWARD_CORRECT   = 1
 REWARD_INCORRECT = -1
 REWARD_SHAPING   = True
 SHAPING_FACTOR   = 0.25
@@ -40,27 +40,27 @@ EPSILON_UPDATE_EPOCHS = 100  # update epsilon every x epochs
 LOG_PERF_EPOCHS  = 100
 
 #================== NN
-BATCH_SIZE       = 50000
+BATCH_SIZE       = 20000
 POOL_SIZE        = 2000000
 
-OPT_LR           = 5.0e-5
+OPT_LR           = 1.0e-4
 OPT_ALPHA        = 0.95
 OPT_MAX_NORM     = 1.0
 
 # LR scheduling => lower LR by LR_SC_FACTOR every LR_SC_EPOCHS epochs
-LR_SC_FACTOR     = 0.5
+LR_SC_FACTOR     = 0.9
 LR_SC_EPOCHS     = 10000
-LR_SC_MIN        = 1.0e-7
+LR_SC_MIN        = 1.0e-6
 
 TARGET_RHO       = 0.01
 
 #================== AUX
 SAVE_EPOCHS      = 1000
 MAX_MASK_CONST   = 1.e6
-GPU_ID           = 1
+GPU_ID           = 0
 SEED             = 1126
 
 
 #================== PLOT
 PLOT             = True
-PLOT_ENV         = 'ddqn'
+PLOT_ENV         = 'DDQN_73dis'

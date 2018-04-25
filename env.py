@@ -54,8 +54,9 @@ class Environment:
 		s_ = self._get_state()
 		num_s_one  = (s ==1).sum(1)-3
 		num_s__one = (s_==1).sum(1)-3
-		addition_reward = SHAPING_FACTOR * (1 * num_s__one - num_s_one)
-		r = r+addition_reward
+		if REWARD_SHAPING:
+			addition_reward = SHAPING_FACTOR * (1 * num_s__one - num_s_one)
+			r = r+addition_reward
 
 		return (s_, r)
 

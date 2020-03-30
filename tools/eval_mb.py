@@ -84,7 +84,7 @@ class PerfEnv:
     def __init__(self, data_x, data_y, costs, ff):
         self.x = data_x
         self.y = data_y
-        self.costs = costs.as_matrix()
+        self.costs = costs.values
 
         self.agents = len(data_x)
         self.lin_array = np.arange(self.agents)
@@ -170,8 +170,8 @@ costs = meta[META_COSTS]
 data[feats] = (data[feats] - meta[META_AVG]) / meta[META_STD]    # normalize
 # data = data[0:10000]
 
-data_x   = data.iloc[:, 0:-2].astype('float32').as_matrix()
-data_y   = data.iloc[:,   -2].astype('int32').as_matrix()
+data_x   = data.iloc[:, 0:-2].astype('float32').values
+data_y   = data.iloc[:,   -2].astype('int32').values
 data_len = len(data)
 
 #==============================

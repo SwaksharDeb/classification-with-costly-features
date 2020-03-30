@@ -7,11 +7,11 @@ LIN_ARRAY = np.arange(AGENTS)
 #==============================
 class Environment:
     def __init__(self, data, costs, ff):
-        self.data_x = data.iloc[:, 0:-1].astype('float32').as_matrix()
-        self.data_y = data.iloc[:,   -1].astype('int32').as_matrix()
+        self.data_x = data.iloc[:, 0:-1].astype('float32').values
+        self.data_y = data.iloc[:,   -1].astype('int32').values
         self.data_len = len(data)
 
-        self.costs = costs.as_matrix()
+        self.costs = costs.values
 
         self.mask = np.zeros( (AGENTS, FEATURE_DIM) )
         self.x    = np.zeros( (AGENTS, FEATURE_DIM) )

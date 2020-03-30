@@ -30,6 +30,10 @@ class Net(torch.nn.Module):
         self.cuda()
 
     def forward(self, batch):
+        """
+        Params:
+            batch = batch of input states = FEATURE_DIM*2
+        """
         flow = batch
 
         for l in self.l_fc:
@@ -40,6 +44,9 @@ class Net(torch.nn.Module):
         return a_out_q_val
 
     def copy_weights(self, other, rho=TARGET_RHO):
+        """
+        Soft update
+        """
         params_other = list(other.parameters())
         params_self  = list(self.parameters())
 
@@ -51,10 +58,18 @@ class Net(torch.nn.Module):
             params_self[i].data.copy_(val_new)
 
     def train_network(self, s, action, q_):
+        """
+        We are considering gamma = 1
+        Params:
+            s = batch of input states = FEATURE_DIM *2
+            action = batch of actions performed
+            q_ = batch of TD errors
+        Outputs:
+            adjust the network parameters to minimize loss
+        """
         s  = Variable(s)
         action  = Variable(action)
-        q_ = Variable(q_) # q_ is the TD target, discount factor = 1
-
+        q_ = Variable(q_)
         ## self(s) == call forward function
         q_pred = self(s).gather(1, action.view(-1,1))    # we have results only for performed actions
         loss_q = self.loss_f(q_pred, q_)

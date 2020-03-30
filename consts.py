@@ -1,12 +1,12 @@
 BLANK_INIT = True
 
 #================== DATASET
-DATA_FILE = 'data/mb-train'
-DATA_VAL_FILE = 'data/mb-val'
-META_FILE = 'data/mb-meta'
+DATA_FILE = 'data/wine-train'
+DATA_VAL_FILE = 'data/wine-val'
+META_FILE = 'data/wine-meta'
 
-CLASSES = 2
-FEATURE_DIM = 50
+CLASSES = 3
+FEATURE_DIM = 13
 STATE_DIM = FEATURE_DIM * 2
 ACTION_DIM = FEATURE_DIM + CLASSES
 
@@ -18,34 +18,34 @@ META_AVG   = 'avg'
 META_STD   = 'std'
 
 #================== RL
-FEATURE_FACTOR   =   0.1
+FEATURE_FACTOR   =   0.001
 REWARD_CORRECT   =   0
 REWARD_INCORRECT =  -1
 
 #================== TRAINING
 AGENTS = 1000
 
-TRAINING_EPOCHS = 10000
+TRAINING_EPOCHS = 30000
 
 EPOCH_STEPS = 1
 
 EPSILON_START  = 0.50
 EPSILON_END    = 0.05
-EPSILON_EPOCHS = 2000         # epsilon will fall to EPSILON_END after EPSILON_EPOCHS
+EPSILON_EPOCHS = 2000	 	# epsilon will fall to EPSILON_END after EPSILON_EPOCHS
 EPSILON_UPDATE_EPOCHS = 10  # update epsilon every x epochs
 
 #================== LOG
 from log_states.log_mb import TRACKED_STATES
 LOG_TRACKED_STATES = TRACKED_STATES
 
-LOG_EPOCHS = 100              # states prediction will be logged every LOG_EPOCHS
+LOG_EPOCHS = 100  			# states prediction will be logged every LOG_EPOCHS
 
 LOG_PERF_EPOCHS = 100
 LOG_PERF_VAL_SIZE = 1000
 
 #================== NN
-BATCH_SIZE =     100000
-POOL_SIZE  =   1000000
+BATCH_SIZE =    100000
+POOL_SIZE  =   2000000
 
 NN_FC_DENSITY = 128
 NN_HIDDEN_LAYERS = 3

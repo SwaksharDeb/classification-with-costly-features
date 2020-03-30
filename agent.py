@@ -1,3 +1,15 @@
+#%% variables are initialized in const.py file
+"""
+    AGENT = how many samples to collect in one step= 1000
+    EPSILON_START = 0.50
+    CLASSES = 2 = as we are loading miniboones dataset(mb) by default, it has 2 classes(0 and 1)
+    FEATURE_DIM = 50 = as we are loading miniboones dataset(mb) by default, it has 50 features
+    ACTION_DIM = FEATURE_DIM + CLASSES
+    STATE_DIM = FEATURE_DIM * 2( multiply by 2 because of the mask)
+              = First two coloum of the SATE_DIM specify classes(assuming miniboone dataset is loaded by deffault)
+    MAX_MASK_CONST = int(1e6) = for not considering the actions that are already performed
+"""
+#%%
 import numpy as np
 from env import Environment
 from IPython.core.debugger import set_trace
@@ -11,12 +23,22 @@ class Agent():
         self.brain = brain
 
         self.epsilon = EPSILON_START
-        self.s = self.env.reset()
+        self.s = self.env.reset()  # initialize state to zeros.
 
     def store(self, x):
+        """
+        Params:
+            x = sample expreience = (s, a, s', r)
+        """
         self.pool.put(x)
 
     def act(self, s):
+        """
+        Params:
+            s = batch of input states(dimension = FEATURE_DIM *2)
+        Outputs:
+            a = batch of actions
+        """
         m = np.zeros((AGENTS, ACTION_DIM))    # create max_mask
         m[:, CLASSES:] = s[:, FEATURE_DIM:]
 

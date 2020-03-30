@@ -207,7 +207,7 @@ while idx < data_len:
     avg_len += _len
     avg_corr += _corr
     predicted_labels[idx:last] = batch_prediction
-    predicted_labels[idx:last] = predicted_labels[idx:last] + np.ones((len(data_batch_y)))  # since class start from one
+    predicted_labels[idx:last] = predicted_labels[idx:last]  # since class start from one
     idx += CHUNK_SIZE
 
 avg_len  /= data_len

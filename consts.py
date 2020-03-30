@@ -16,7 +16,7 @@ COLUMN_DROP  = ['_count']
 META_COSTS = 'cost'
 META_AVG   = 'avg'
 META_STD   = 'std'
- 
+
 #================== RL
 FEATURE_FACTOR   =   0.1
 REWARD_CORRECT   =   0
@@ -31,21 +31,21 @@ EPOCH_STEPS = 1
 
 EPSILON_START  = 0.50
 EPSILON_END    = 0.05
-EPSILON_EPOCHS = 2000	 	# epsilon will fall to EPSILON_END after EPSILON_EPOCHS
+EPSILON_EPOCHS = 2000         # epsilon will fall to EPSILON_END after EPSILON_EPOCHS
 EPSILON_UPDATE_EPOCHS = 10  # update epsilon every x epochs
 
 #================== LOG
 from log_states.log_mb import TRACKED_STATES
 LOG_TRACKED_STATES = TRACKED_STATES
 
-LOG_EPOCHS = 100  			# states prediction will be logged every LOG_EPOCHS
+LOG_EPOCHS = 100              # states prediction will be logged every LOG_EPOCHS
 
 LOG_PERF_EPOCHS = 100
 LOG_PERF_VAL_SIZE = 1000
 
 #================== NN
-BATCH_SIZE =    100000
-POOL_SIZE  =   2000000
+BATCH_SIZE =     100000
+POOL_SIZE  =   1000000
 
 NN_FC_DENSITY = 128
 NN_HIDDEN_LAYERS = 3

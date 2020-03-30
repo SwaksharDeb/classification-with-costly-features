@@ -23,9 +23,9 @@ REWARD_CORRECT   =   0
 REWARD_INCORRECT =  -1
 
 #================== TRAINING
-AGENTS = 1000
+AGENTS = 1000  # number of sample to collect in one step
 
-TRAINING_EPOCHS = 30000
+TRAINING_EPOCHS = 10000
 
 EPOCH_STEPS = 1
 

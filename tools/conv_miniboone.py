@@ -16,19 +16,18 @@ SEED = 998822
 np.random.seed(SEED)
 
 data = pd.read_csv("../data/raw/miniboone.dat", header=None, sep='\s+')
-set_trace()
 
-data[COL_LABEL] = 0
+data[COL_LABEL] = 0  # adding a coloum named _label
 data.iloc[36500:][COL_LABEL] = 1
 
-data[COL_COUNT] = 1
+data[COL_COUNT] = 1  # adding a coloum named _count
 
 data = data[ data[0] > -900]
 
-data.iloc[:, 0:-2] = data.iloc[:, 0:-2].astype('float32')
-data.iloc[:,-2:  ] = data.iloc[:,-2:  ].astype('int32')
+data.iloc[:, 0:-2] = data.iloc[:, 0:-2].astype('float32') # converting to float32
+data.iloc[:,-2:  ] = data.iloc[:,-2:  ].astype('int32') # converting to int32
 
-print(data.head())
+#print(data.head())
 
 TRAIN_SIZE = 45359
 VAL_SIZE   = 19439

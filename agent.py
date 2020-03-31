@@ -28,7 +28,7 @@ class Agent():
     def store(self, x):
         """
         Params:
-            x = sample expreience = (s, a, s', r)
+            x = sample expreiences = (s, a, s', r)
         """
         self.pool.put(x)
 
@@ -62,6 +62,9 @@ class Agent():
         return a
 
     def step(self):
+        """
+        store (states, actions, rewards, next states)
+        """
         a = self.act(self.s)
         s_, r = self.env.step(a)
 

@@ -56,6 +56,7 @@ torch.cuda.manual_seed(SEED)
 data = pd.read_pickle(DATA_FILE)
 data_val = pd.read_pickle(DATA_VAL_FILE)
 meta = pd.read_pickle(META_FILE)
+#data_test = pd.read_pickle(DATA_TEST_FILE)
 
 feats = meta.index
 costs = meta[META_COSTS]

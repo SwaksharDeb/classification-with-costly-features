@@ -1,12 +1,13 @@
 BLANK_INIT = True
 
 #================== DATASET
-DATA_FILE = 'data/wine-train'
-DATA_VAL_FILE = 'data/wine-val'
-META_FILE = 'data/wine-meta'
+DATA_FILE = 'data/stroke_rehabilitation-train'
+DATA_VAL_FILE = 'data/stroke_rehabilitation-val'
+META_FILE = 'data/stroke_rehabilitation-meta'
+DATA_TEST_FILE = 'data/stroke_rehabilitation-test'
 
-CLASSES = 3
-FEATURE_DIM = 13
+CLASSES = 2
+FEATURE_DIM = 66
 STATE_DIM = FEATURE_DIM * 2
 ACTION_DIM = FEATURE_DIM + CLASSES
 
@@ -23,7 +24,7 @@ REWARD_CORRECT   =   0
 REWARD_INCORRECT =  -1
 
 #================== TRAINING
-AGENTS = 1000  # number of sample to collect in one step
+AGENTS = 1000
 
 TRAINING_EPOCHS = 10000
 
@@ -45,7 +46,7 @@ LOG_PERF_VAL_SIZE = 1000
 
 #================== NN
 BATCH_SIZE =    100000
-POOL_SIZE  =   2000000
+POOL_SIZE  =   500000
 
 NN_FC_DENSITY = 128
 NN_HIDDEN_LAYERS = 3

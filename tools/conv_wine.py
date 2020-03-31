@@ -25,9 +25,9 @@ data['_label'] = data['_label'] -1  # since class start from one
 data = data.sample(frac=1).reset_index(drop=True)
 
 # %% train, validation, test split
-TRAIN_SIZE = int(data.shape[0] * 0.5)  # 0.35%
+TRAIN_SIZE = int(data.shape[0] * 0.5)  # 0.5%
 VAL_SIZE   = int(data.shape[0] * 0.15)  # 0.15%
-TEST_SIZE  = int(data.shape[0] * 0.35)   # 0.5 %
+TEST_SIZE  = int(data.shape[0] * 0.35)   # 0.35 %
 
 data_train = data.iloc[0:TRAIN_SIZE]
 data_val   = data.iloc[TRAIN_SIZE:TRAIN_SIZE+VAL_SIZE]
